@@ -9,8 +9,20 @@ MDIR := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 $(info -- KDIR: $(KDIR))
 $(info -- MDIR: $(MDIR))
 
-# compliant to last upstream kernel change as of 35d8162
-ccflags-y += -DKSU_VERSION=32292
+# compliant to last upstream kernel change as of 528bafc
+CFLAGS_ksu.o += -DKSU_VERSION=32704
+
+KSU_PACKAGE_NAME := io.ozsx.su
+KSU_EXPECTED_SIZE := 0x031e
+KSU_EXPECTED_HASH := 6caaeaa8162aae2b69f4344ef4c2607ac8b7ea109738c9336cc51d50842da03b
+
+$(info -- KernelSU Manager package name: $(KSU_PACKAGE_NAME))
+$(info -- KernelSU Manager signature size: $(KSU_EXPECTED_SIZE))
+$(info -- KernelSU Manager signature hash: $(KSU_EXPECTED_HASH))
+
+CFLAGS_ksu.o += -DKSU_PACKAGE_NAME=\"$(KSU_PACKAGE_NAME)\"
+CFLAGS_ksu.o += -DEXPECTED_SIZE=$(KSU_EXPECTED_SIZE)
+CFLAGS_ksu.o += -DEXPECTED_HASH=\"$(KSU_EXPECTED_HASH)\"
 
 ifeq ($(shell grep -q " current_sid(void)" $(srctree)/security/selinux/include/objsec.h; echo $$?),0)
 ccflags-y += -DKSU_COMPAT_HAS_CURRENT_SID
