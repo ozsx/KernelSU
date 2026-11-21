@@ -225,7 +225,7 @@ scan_start:
 	insert_to_kallsyms_array(symbol_buf, curr);
 
 step_up:;
-	size_t sym_sz = sizeof(uint32_t);
+	unsigned long sym_sz = sizeof(uint32_t);
 	if (slash && !!kstrtoul(slash + 1, 0, &sym_sz))
 		sym_sz = sizeof(uint32_t);
 
